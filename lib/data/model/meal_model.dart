@@ -2,18 +2,13 @@ import '../../domain/entity/meal.dart';
 
 class MealModel extends Meal {
   MealModel({
-    required String id,
-    required String name,
-    required MealType type,
-    required DateTime dateTime,
-    required int calories,
-  }) : super(
-          id: id,
-          name: name,
-          type: type,
-          dateTime: dateTime,
-          calories: calories,
-        );
+    required super.id,
+    required super.name,
+    required super.type,
+    required super.dateTime,
+    required super.calories,
+    super.imageUrl,
+  });
 
   factory MealModel.fromJson(Map<String, dynamic> json) {
     return MealModel(
@@ -22,6 +17,7 @@ class MealModel extends Meal {
       type: MealType.values[json['type']],
       dateTime: DateTime.parse(json['dateTime']),
       calories: json['calories'],
+      imageUrl: json['imageUrl'],
     );
   }
 
@@ -32,6 +28,7 @@ class MealModel extends Meal {
       'type': type.index,
       'dateTime': dateTime.toIso8601String(),
       'calories': calories,
+      'imageUrl': imageUrl,
     };
   }
 
@@ -42,6 +39,23 @@ class MealModel extends Meal {
       type: meal.type,
       dateTime: meal.dateTime,
       calories: meal.calories,
+      imageUrl: meal.imageUrl,
+    );
+  }
+
+  MealModel copyWith({
+    String? id,
+    String? name,
+    MealType? type,
+    DateTime? dateTime,
+    int? calories,
+  }) {
+    return MealModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      type: type ?? this.type,
+      dateTime: dateTime ?? this.dateTime,
+      calories: calories ?? this.calories,
     );
   }
 }

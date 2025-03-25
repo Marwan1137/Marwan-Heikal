@@ -4,13 +4,13 @@ abstract class Failure {
 }
 
 class ValidationFailure extends Failure {
-  const ValidationFailure(String message) : super(message);
+  const ValidationFailure(super.message);
 }
 
 class StorageFailure extends Failure {
-  const StorageFailure(String message) : super(message);
+  const StorageFailure(super.message);
 }
 
 class GeneralFailure extends Failure {
-  const GeneralFailure(String message) : super(message);
+  const GeneralFailure(super.message);
 }

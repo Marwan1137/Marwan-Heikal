@@ -12,6 +12,7 @@ class Meal {
   final MealType type;
   final DateTime dateTime;
   final int calories;
+  final String? imageUrl;
 
   Meal({
     required this.id,
@@ -19,6 +20,7 @@ class Meal {
     required this.type,
     required this.dateTime,
     required this.calories,
+    this.imageUrl,
   });
 
   Meal copywith({
@@ -27,6 +29,7 @@ class Meal {
     MealType? type,
     DateTime? dateTime,
     int? calories,
+    String? imageUrl,
   }) {
     return Meal(
       id: id ?? this.id,
@@ -34,6 +37,7 @@ class Meal {
       type: type ?? this.type,
       dateTime: dateTime ?? this.dateTime,
       calories: calories ?? this.calories,
+      imageUrl: imageUrl ?? this.imageUrl,
     );
   }
 }

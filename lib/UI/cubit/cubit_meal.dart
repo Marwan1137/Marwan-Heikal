@@ -28,19 +28,19 @@ class CubitMeal extends Cubit<MealState> {
 
   void onIntent(MealIntent intent) async {
     switch (intent.runtimeType) {
-      case LoadMealsIntent:
+      case const (LoadMealsIntent):
         await _handleLoadMeals();
         break;
-      case AddMealIntent:
+      case const (AddMealIntent):
         await _handleAddMeal((intent as AddMealIntent).meal);
         break;
-      case UpdateMealIntent:
+      case const (UpdateMealIntent):
         await _handleUpdateMeal((intent as UpdateMealIntent).meal);
         break;
-      case DeleteMealIntent:
+      case const (DeleteMealIntent):
         await _handleDeleteMeal((intent as DeleteMealIntent).id);
         break;
-      case SortMealsIntent:
+      case const (SortMealsIntent):
         await _handleSortMeals((intent as SortMealsIntent).sortBy);
         break;
     }

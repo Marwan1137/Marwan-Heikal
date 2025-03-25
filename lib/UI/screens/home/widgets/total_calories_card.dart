@@ -1,5 +1,6 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class TotalCaloriesCard extends StatelessWidget {
   final int totalCalories;
@@ -12,15 +13,17 @@ class TotalCaloriesCard extends StatelessWidget {
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.green[10],
+        color: Colors.white,
+        border:
+            Border.all(color: Colors.green.shade300, width: 2), // Add border
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        // boxShadow: [
+        //   BoxShadow(
+        //     color: Colors.green.shade300,
+        //     blurRadius: 10,
+        //     offset: const Offset(0, 4),
+        //   ),
+        // ],
       ),
       child: Row(
         children: [
@@ -35,13 +38,14 @@ class TotalCaloriesCard extends StatelessWidget {
             children: [
               const Text(
                 'Total Calories',
-                style: TextStyle(fontSize: 14, color: Colors.grey),
+                style: TextStyle(fontSize: 22, color: Colors.black),
               ),
               Text(
                 '$totalCalories cal',
                 style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
+                  color: Colors.black,
                 ),
               ),
             ],

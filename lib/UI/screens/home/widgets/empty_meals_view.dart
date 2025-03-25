@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class EmptyMealsView extends StatelessWidget {
   const EmptyMealsView({super.key});

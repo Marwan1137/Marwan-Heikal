@@ -4,91 +4,77 @@ import 'package:meal_tracker/UI/cubit/cubit_meal.dart';
 import 'package:meal_tracker/UI/cubit/cubit_meal_intent.dart';
 import 'package:meal_tracker/UI/cubit/cubit_meal_state.dart';
 import 'package:meal_tracker/UI/screens/add_meal_screen.dart';
-import 'package:meal_tracker/UI/screens/home/widgets/empty_meals_view.dart';
 import 'package:meal_tracker/UI/screens/home/widgets/meals_list.dart';
 import 'package:meal_tracker/UI/screens/home/widgets/sort_button.dart';
 import 'package:meal_tracker/UI/screens/home/widgets/total_calories_card.dart';
-import 'package:meal_tracker/domain/entity/meal.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CubitMeal, MealState>(
-      builder: (context, state) {
-        return Scaffold(
-          backgroundColor: Colors.grey[100],
-          appBar: _buildAppBar(),
-          body: _buildBody(context, state),
-          floatingActionButton: _buildFloatingActionButton(context),
-        );
-      },
-    );
-  }
-
-  PreferredSizeWidget _buildAppBar() {
-    return AppBar(
-      backgroundColor: Colors.green,
-      title: const Text(
-        'Meal Tracker',
-        style: TextStyle(color: Colors.white),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Meal Tracker'),
+        centerTitle: true,
+        backgroundColor: Colors.green,
+        actions: const [
+          SortButton(),
+        ],
       ),
-      actions: const [SortButton()],
-    );
-  }
+      body: BlocBuilder<CubitMeal, MealState>(
+        builder: (context, state) {
+          if (state.status == UIStatus.loading) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-  Widget _buildBody(BuildContext context, MealState state) {
-    return switch (state.status) {
-      UIStatus.loading => const Center(child: CircularProgressIndicator()),
-      _ when state.meals.isEmpty => const EmptyMealsView(),
-      _ => Column(
-          children: [
-            TotalCaloriesCard(totalCalories: state.totalCalories),
-            Expanded(
-              child: MealsList(
-                meals: state.meals,
-                onUpdate: (meal) => _navigateToUpdateMeal(context, meal),
-                onDelete: (id) => _deleteMeal(context, id),
-              ),
-            ),
-          ],
-        ),
-    };
-  }
+          if (state.status == UIStatus.success) {
+            print('Number of meals: ${state.meals.length}'); // Debug print
+            for (var meal in state.meals) {
+              print('Meal ${meal.id} image: ${meal.imageUrl}'); // Debug print
+            }
 
-  Widget _buildFloatingActionButton(BuildContext context) {
-    return FloatingActionButton(
-      onPressed: () => _navigateToAddMeal(context),
-      child: const Icon(Icons.add),
-    );
-  }
+            // Calculate total calories
+            final totalCalories =
+                state.meals.fold<int>(0, (sum, meal) => sum + meal.calories);
 
-  void _navigateToAddMeal(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => BlocProvider.value(
-          value: context.read<CubitMeal>(),
-          child: const AddMealScreen(),
-        ),
+            return Column(
+              children: [
+                TotalCaloriesCard(totalCalories: totalCalories),
+                Expanded(
+                  child: MealsList(
+                    meals: state.meals,
+                    onUpdate: (meal) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              AddMealScreen(mealToUpdate: meal),
+                        ),
+                      );
+                    },
+                    onDelete: (id) {
+                      context.read<CubitMeal>().onIntent(DeleteMealIntent(id));
+                    },
+                  ),
+                ),
+              ],
+            );
+          }
+
+          return const Center(child: Text('No meals found'));
+        },
       ),
-    );
-  }
-
-  void _navigateToUpdateMeal(BuildContext context, Meal meal) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => BlocProvider.value(
-          value: context.read<CubitMeal>(),
-          child: AddMealScreen(mealToUpdate: meal),
-        ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AddMealScreen()),
+          );
+        },
+        backgroundColor: Colors.green,
+        child: const Icon(Icons.add),
       ),
     );
-  }
-
-  void _deleteMeal(BuildContext context, String id) {
-    context.read<CubitMeal>().onIntent(DeleteMealIntent(id));
   }
 }
