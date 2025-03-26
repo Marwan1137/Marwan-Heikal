@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_tracker/UI/cubit/cubit_meal.dart';
 import 'package:meal_tracker/UI/cubit/cubit_meal_intent.dart';
+import 'package:meal_tracker/UI/cubit/meal_search_cubit.dart';
 import 'package:meal_tracker/UI/cubit/theme_cubit.dart';
 import 'package:meal_tracker/UI/screens/main_screen.dart';
 import 'package:meal_tracker/core/DI/di.dart';
@@ -22,6 +23,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => getIt<CubitMeal>()..onIntent(LoadMealsIntent()),
+        ),
+        BlocProvider(
+          create: (context) => getIt<MealSearchCubit>(),
         ),
         BlocProvider(
           create: (context) => ThemeCubit(),
