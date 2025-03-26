@@ -31,13 +31,36 @@ class MealDetailsScreen extends StatelessWidget {
                     meal.strMeal,
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
-                  if (meal.strCategory != null) ...[
-                    const SizedBox(height: 8),
+                  const SizedBox(height: 8),
+                  if (meal.strCategory != null) 
                     Text(
                       'Category: ${meal.strCategory}',
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
+                  if (meal.strArea != null) ...[
+                    const SizedBox(height: 8),
+                    Text(
+                      'Area: ${meal.strArea}',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
                   ],
+                  const SizedBox(height: 16),
+                  Text(
+                    'Instructions',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    meal.strInstructions ?? 'No instructions available',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Ingredients',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const SizedBox(height: 8),
+                  _buildIngredientsList(meal),
                 ],
               ),
             ),
@@ -47,3 +70,30 @@ class MealDetailsScreen extends StatelessWidget {
     );
   }
 }
+
+  Widget _buildIngredientsList(MealApiModel meal) {
+    List<Widget> ingredients = [];
+    
+    // Add non-null ingredients with their measurements
+    for (int i = 1; i <= 20; i++) {
+      final ingredient = meal.getIngredient(i);
+      final measure = meal.getMeasure(i);
+      
+      if (ingredient != null && ingredient.isNotEmpty) {
+        ingredients.add(
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: Text(
+              '• ${measure ?? ''} ${ingredient}',
+              style: const TextStyle(fontSize: 16),
+            ),
+          ),
+        );
+      }
+    }
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: ingredients,
+    );
+  }
