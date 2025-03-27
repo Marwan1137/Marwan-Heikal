@@ -120,6 +120,7 @@ class MealCard extends StatelessWidget {
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
+                              color: Colors.black,
                             ),
                           ),
                           const SizedBox(height: 4),
@@ -127,7 +128,7 @@ class MealCard extends StatelessWidget {
                             DateFormatter.formatDateTime(meal.dateTime),
                             style: TextStyle(
                               fontSize: 12,
-                              color: Colors.grey[600],
+                              color: Colors.black,
                             ),
                           ),
                         ],
